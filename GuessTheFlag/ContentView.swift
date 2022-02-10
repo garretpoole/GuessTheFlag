@@ -9,22 +9,39 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        //full gradient
-        LinearGradient(gradient: Gradient(colors: [.white, .black]), startPoint: .top, endPoint: .bottom)
+//        Button("Delete Selection", role: .destructive, action: executeDelete)
+//
+//        VStack{
+//            Button("Button 1") {}
+//            .buttonStyle(.bordered)
+//            Button("Button 2", role: .destructive) {}
+//            .buttonStyle(.bordered)
+//            Button("Button 3") {}
+//            .buttonStyle(.borderedProminent)
+//            .tint(.green)
+//            Button("Button 4", role: .destructive) {}
+//            .buttonStyle(.borderedProminent)
+//        }
+//
+        Button{
+            print("Button tapped")
+        } label: {
+//            Text("Tap Me")
+//                .padding()
+//                .foregroundColor(.white)
+//                .background(.purple)
+//            Image(systemName: "pencil")
+//              //makes image show with original colors not recolored
+//              .renderingMode(.original)
+            Label("Edit", systemImage: "pencil")
+        }
         
-        //percentage gradient
-        LinearGradient(gradient: Gradient(stops: [
-            .init(color: .white, location: 0.45),
-            .init(color: .black, location: 0.55)
-        ]), startPoint: .top, endPoint: .bottom)
         
-        //radial gradient
-        RadialGradient(gradient: Gradient(colors: [.blue, .black]), center: .center, startRadius: 20, endRadius: 200)
         
-        //angular gradient
-        Text("Hellow World")
-            .padding(100)
-            .background(AngularGradient(gradient: Gradient(colors: [.red, .yellow, .green, .blue, .purple, .red]), center: .center))
+    }
+    
+    func executeDelete(){
+        print("Now Deleting")
     }
 }
 
