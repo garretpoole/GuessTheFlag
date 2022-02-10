@@ -8,40 +8,18 @@
 import SwiftUI
 
 struct ContentView: View {
-    var body: some View {
-//        Button("Delete Selection", role: .destructive, action: executeDelete)
-//
-//        VStack{
-//            Button("Button 1") {}
-//            .buttonStyle(.bordered)
-//            Button("Button 2", role: .destructive) {}
-//            .buttonStyle(.bordered)
-//            Button("Button 3") {}
-//            .buttonStyle(.borderedProminent)
-//            .tint(.green)
-//            Button("Button 4", role: .destructive) {}
-//            .buttonStyle(.borderedProminent)
-//        }
-//
-        Button{
-            print("Button tapped")
-        } label: {
-//            Text("Tap Me")
-//                .padding()
-//                .foregroundColor(.white)
-//                .background(.purple)
-//            Image(systemName: "pencil")
-//              //makes image show with original colors not recolored
-//              .renderingMode(.original)
-            Label("Edit", systemImage: "pencil")
-        }
-        
-        
-        
-    }
+    @State private var showingAlert = false
     
-    func executeDelete(){
-        print("Now Deleting")
+    var body: some View {
+        Button("Show Alert"){
+            showingAlert = true
+        }
+        .alert("Important", isPresented: $showingAlert){
+            Button("Delete", role: .destructive) { }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Please Read")
+        }
     }
 }
 
