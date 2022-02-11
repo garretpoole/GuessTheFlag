@@ -9,11 +9,14 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var showingScore = false
-    @State private var scoreTitle = ""
+    @State private var showingFinalScore = false
     
+    @State private var scoreTitle = ""
+    @State private var finalTitle = ""
     @State private var countries = ["Estonia", "France", "Germany", "Ireland", "Italy", "Nigeria", "Poland", "Russia", "Spain", "UK", "US"].shuffled()
     @State private var correctAnswer = Int.random(in: 0...2)
     @State private var currentScore = 0
+    @State private var questionCount = 0
     
     var body: some View {
         ZStack{
@@ -70,6 +73,14 @@ struct ContentView: View {
         } message: {
             Text("Score: \(currentScore)")
         }
+        .alert(finalTitle, isPresented: $showingFinalScore){
+            Button("Continue"){
+                resetGame()
+                askQuestion()
+            }
+        } message: {
+            Text("Final Score: \(currentScore)/\(questionCount)")
+        }
             
     }
     
@@ -84,13 +95,31 @@ struct ContentView: View {
                     That is the flag of \(countries[number])
                     """
         }
-        showingScore = true
+        questionCount += 1
+        if questionCount == 8{
+            if currentScore > 6{
+                finalTitle = "Congratulations!!"
+            }
+            else{
+                finalTitle = "You should study..."
+            }
+            showingFinalScore = true
+        }
+        else{
+            showingScore = true
+        }
     }
     
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
     }
+    
+    func resetGame() {
+        questionCount = 0
+        currentScore = 0
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
