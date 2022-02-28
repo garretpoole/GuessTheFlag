@@ -40,7 +40,8 @@ struct ContentView: View {
     @State private var selectedFlag = 0
     @State private var animationAmount = 0.0
     @State private var animateOpacity = 1.0
-    @State private var showAnswer = false
+    @State private var wrongFlag = Color.clear
+    @State private var correctFlag = Color.clear
     
     
     var body: some View {
@@ -72,15 +73,16 @@ struct ContentView: View {
                             withAnimation{
                                 animationAmount += 360
                                 animateOpacity -= 0.5
+                                wrongFlag = Color.red
+                                correctFlag = Color.green
                             }
                         } label: {
                             FlagImage(country: countries[number])
                         }
                         .rotation3DEffect(selectedFlag==number ? .degrees(animationAmount) : .degrees(0.0), axis: (x: 0, y: 1, z: 0))
                         .opacity(correctAnswer==number ? 1.0 : animateOpacity)
-                        .background(showAnswer ? (correctAnswer == number ?
-                                                  BackgroundFlag(color: .green) : BackgroundFlag(color: .red)) :
-                                        BackgroundFlag(color: .clear))
+                        .background(correctAnswer == number ?
+                                    BackgroundFlag(color:correctFlag) : BackgroundFlag(color: wrongFlag))
                         
                         
                     }
@@ -119,7 +121,6 @@ struct ContentView: View {
     }
     
     func flagTapped(_ number: Int){
-        showAnswer.toggle()
         selectedFlag = number
         if number == correctAnswer{
             scoreTitle = "Correct"
@@ -151,7 +152,8 @@ struct ContentView: View {
         correctAnswer = Int.random(in: 0...2)
         //animation
         animateOpacity = 1.0
-        showAnswer.toggle()
+        wrongFlag = Color.clear
+        correctFlag = Color.clear
     }
     
     func resetGame() {
