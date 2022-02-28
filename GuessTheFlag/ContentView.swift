@@ -40,6 +40,7 @@ struct ContentView: View {
     @State private var selectedFlag = 0
     @State private var animationAmount = 0.0
     @State private var animateOpacity = 1.0
+    @State private var scaleAmount = 1.0
     @State private var wrongFlag = Color.clear
     @State private var correctFlag = Color.clear
     
@@ -75,16 +76,16 @@ struct ContentView: View {
                                 animateOpacity -= 0.5
                                 wrongFlag = Color.red
                                 correctFlag = Color.green
+                                scaleAmount -= 0.2
                             }
                         } label: {
                             FlagImage(country: countries[number])
                         }
-                        .rotation3DEffect(selectedFlag==number ? .degrees(animationAmount) : .degrees(0.0), axis: (x: 0, y: 1, z: 0))
-                        .opacity(correctAnswer==number ? 1.0 : animateOpacity)
+                        .rotation3DEffect(selectedFlag == number ? .degrees(animationAmount) : .degrees(0.0), axis: (x: 0, y: 1, z: 0))
+                        .opacity(correctAnswer == number ? 1.0 : animateOpacity)
                         .background(correctAnswer == number ?
                                     BackgroundFlag(color:correctFlag) : BackgroundFlag(color: wrongFlag))
-                        
-                        
+                        .scaleEffect(correctAnswer == number ? 1 : scaleAmount)
                     }
                     
                 }
@@ -152,6 +153,7 @@ struct ContentView: View {
         correctAnswer = Int.random(in: 0...2)
         //animation
         animateOpacity = 1.0
+        scaleAmount = 1.0
         wrongFlag = Color.clear
         correctFlag = Color.clear
     }
