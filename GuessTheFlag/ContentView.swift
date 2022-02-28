@@ -17,6 +17,14 @@ struct FlagImage: View{
     }
 }
 
+struct BackgroundFlag: View{
+    var color: Color
+    
+    var body: some View{
+        Capsule(style: .circular).fill(color).blur(radius: 30)
+    }
+}
+
 struct ContentView: View {
     @State private var showingScore = false
     @State private var showingFinalScore = false
@@ -27,6 +35,13 @@ struct ContentView: View {
     @State private var correctAnswer = Int.random(in: 0...2)
     @State private var currentScore = 0
     @State private var questionCount = 0
+    
+    //animations
+    @State private var selectedFlag = 0
+    @State private var animationAmount = 0.0
+    @State private var animateOpacity = 1.0
+    @State private var showAnswer = false
+    
     
     var body: some View {
         ZStack{
@@ -54,10 +69,22 @@ struct ContentView: View {
                     ForEach(0..<3) { number in
                         Button {
                             flagTapped(number)
+                            withAnimation{
+                                animationAmount += 360
+                                animateOpacity -= 0.5
+                            }
                         } label: {
                             FlagImage(country: countries[number])
                         }
+                        .rotation3DEffect(selectedFlag==number ? .degrees(animationAmount) : .degrees(0.0), axis: (x: 0, y: 1, z: 0))
+                        .opacity(correctAnswer==number ? 1.0 : animateOpacity)
+                        .background(showAnswer ? (correctAnswer == number ?
+                                                  BackgroundFlag(color: .green) : BackgroundFlag(color: .red)) :
+                                        BackgroundFlag(color: .clear))
+                        
+                        
                     }
+                    
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 20)
@@ -92,6 +119,8 @@ struct ContentView: View {
     }
     
     func flagTapped(_ number: Int){
+        showAnswer.toggle()
+        selectedFlag = number
         if number == correctAnswer{
             scoreTitle = "Correct"
             currentScore += 1
@@ -105,7 +134,7 @@ struct ContentView: View {
         questionCount += 1
         if questionCount == 8{
             if currentScore > 6{
-                finalTitle = "Congratulations!!"
+                finalTitle = "You know your flags!!"
             }
             else{
                 finalTitle = "You should study..."
@@ -120,6 +149,9 @@ struct ContentView: View {
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        //animation
+        animateOpacity = 1.0
+        showAnswer.toggle()
     }
     
     func resetGame() {
